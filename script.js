@@ -256,6 +256,7 @@ const locked = new Set(); // ids of nodes whose result is fixed (cannot change)
 const FIXED = {
     r32: [
         'CAN', // CAN 1 - 0 RSA
+        'BRA', // BRA 2 - 1 JPN
     ], // Round of 32 winners (locked)
     r16: [], // Round of 16 winners (locked)
     qf: [], // Quarter-final winners (locked)
