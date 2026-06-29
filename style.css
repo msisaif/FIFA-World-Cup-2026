@@ -1,0 +1,389 @@
+:root {
+    --bg: #15130f;
+    --bg2: #1c1915;
+    --ink: #efe7d8;
+    --muted: #8a8175;
+    --line: rgba(229, 210, 170, 0.1);
+    --gold: #f4b740;
+    --gold-soft: #caa24e;
+    --ring: rgba(244, 183, 64, 0.55);
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    background:
+        radial-gradient(
+            60% 55% at 50% 50%,
+            #2a2114 0%,
+            rgba(42, 33, 20, 0) 55%
+        ),
+        radial-gradient(
+            120% 120% at 50% 0%,
+            #211c15 0%,
+            var(--bg) 60%
+        );
+    color: var(--ink);
+    font-family:
+        'Segoe UI',
+        -apple-system,
+        system-ui,
+        sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 12px 28px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 6px;
+}
+.eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 600;
+    font-size: clamp(22px, 4.5vw, 36px);
+    letter-spacing: 0.01em;
+    line-height: 1.02;
+}
+h1 .glow {
+    color: var(--gold);
+}
+.sub {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 10px auto 0;
+    max-width: 520px;
+    text-align: center;
+}
+
+/* ---- the circular stage ---- */
+.stage {
+    position: relative;
+    width: min(88vw, 620px);
+    aspect-ratio: 1/1;
+    margin: 6px auto 0;
+    container-type: size;
+}
+svg.lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+.edge {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 2;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    transition:
+        stroke 0.35s ease,
+        stroke-width 0.35s ease;
+}
+.edge.on {
+    stroke: var(--gold);
+    stroke-width: 3.2;
+    filter: drop-shadow(0 0 4px rgba(244, 183, 64, 0.55));
+}
+
+.node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    cursor: default;
+}
+/* leaf = a competing team */
+.leaf {
+    width: 6.8cqmin;
+    height: 6.8cqmin;
+    cursor: pointer;
+    overflow: hidden;
+    border: 1.6px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    transition:
+        transform 0.18s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+/* always-visible flag-colour base + code; real flag image sits on top if it loads */
+.flagimg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 2;
+}
+.code {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+.code i {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 2.4cqmin;
+    letter-spacing: 0.02em;
+    color: #fff;
+    background: rgba(12, 12, 12, 0.55);
+    padding: 0.18em 0.42em;
+    border-radius: 5px;
+    line-height: 1;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+.leaf:hover {
+    transform: translate(-50%, -50%) scale(1.12);
+    border-color: var(--ring);
+    z-index: 6;
+}
+/* a team that lost its match -> dimmed, at any ring */
+.node.lost {
+    filter: saturate(0.35) brightness(0.45);
+    border-color: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+.node.lost:hover {
+    transform: translate(-50%, -50%) scale(1) !important;
+    border-color: rgba(255, 255, 255, 0.07);
+}
+/* a fixed / completed result */
+.node.fixed {
+    box-shadow:
+        0 0 0 2px var(--gold),
+        0 0 10px rgba(244, 183, 64, 0.45),
+        0 3px 9px rgba(0, 0, 0, 0.5);
+}
+.lockmark {
+    position: absolute;
+    top: -4%;
+    right: -4%;
+    width: 36%;
+    height: 36%;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 1.5px solid #16120b;
+    z-index: 4;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+}
+.lockmark::before {
+    /* checkmark */
+    content: '';
+    position: absolute;
+    left: 36%;
+    top: 18%;
+    width: 22%;
+    height: 46%;
+    border: solid #16120b;
+    border-width: 0 1.6px 1.6px 0;
+    transform: rotate(43deg);
+}
+
+/* inner junction nodes */
+.inner {
+    width: 2.6cqmin;
+    height: 2.6cqmin;
+    background: #39332a;
+    border: 1.5px solid rgba(229, 210, 170, 0.18);
+    transition: all 0.3s ease;
+}
+.inner.filled {
+    width: 6.6cqmin;
+    height: 6.6cqmin;
+    cursor: pointer;
+    overflow: hidden;
+    border: 1.6px solid var(--ring);
+    box-shadow:
+        0 0 0 3px rgba(244, 183, 64, 0.1),
+        0 3px 9px rgba(0, 0, 0, 0.5);
+}
+.inner.filled:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    z-index: 6;
+}
+/* filled but the previous round isn't finished yet -> can't advance */
+.inner.filled.locked {
+    cursor: not-allowed;
+    border-color: rgba(229, 210, 170, 0.25);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+}
+.inner.filled.locked:hover {
+    transform: translate(-50%, -50%) scale(1);
+}
+.shake {
+    animation: shake 0.42s ease;
+}
+@keyframes shake {
+    0%,
+    100% {
+        transform: translate(-50%, -50%);
+    }
+    20%,
+    60% {
+        transform: translate(-50%, -50%) translateX(-4px);
+    }
+    40%,
+    80% {
+        transform: translate(-50%, -50%) translateX(4px);
+    }
+}
+.hint.warn {
+    color: #f0a93a;
+}
+
+/* champion / trophy at center */
+.champ {
+    width: 18cqmin;
+    height: 18cqmin;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    z-index: 8;
+}
+.trophy {
+    font-size: 9cqmin;
+    line-height: 1;
+    filter: drop-shadow(0 0 14px rgba(244, 183, 64, 0.55));
+    transition: transform 0.4s ease;
+}
+.champ.crowned .trophy {
+    transform: scale(1.18);
+    filter: drop-shadow(0 0 26px rgba(244, 183, 64, 0.9));
+}
+.champ .flagchip {
+    position: absolute;
+    bottom: -2cqmin;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6.4cqmin;
+    height: 6.4cqmin;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 14px rgba(244, 183, 64, 0.7);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+.champ.crowned .flagchip {
+    opacity: 1;
+}
+
+/* champion banner */
+.banner {
+    margin-top: 22px;
+    min-height: 30px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: 0.5s ease;
+}
+.banner.show {
+    opacity: 1;
+    transform: none;
+}
+.banner .label {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+}
+.banner .name {
+    font-family: Georgia, serif;
+    font-size: 26px;
+    color: var(--gold);
+    margin-top: 4px;
+}
+
+.toolbar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin: 14px 0 2px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.hint {
+    color: var(--muted);
+    font-size: 13px;
+}
+button {
+    font: inherit;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid rgba(229, 210, 170, 0.28);
+    padding: 8px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+button:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+button:disabled {
+    opacity: 0.55;
+    cursor: wait;
+}
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 26px;
+    transform: translateX(-50%) translateY(14px);
+    background: rgba(20, 18, 14, 0.95);
+    border: 1px solid rgba(244, 183, 64, 0.4);
+    color: var(--ink);
+    padding: 11px 20px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    letter-spacing: 0.02em;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+    z-index: 50;
+}
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+footer {
+    margin-top: 30px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
