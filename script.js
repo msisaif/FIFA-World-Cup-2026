@@ -470,10 +470,9 @@ function render() {
         const pr = +childId.split('-')[0] + 1;
         const pi = Math.floor(+childId.split('-')[1] / 2);
         const pid = `${pr}-${pi}`;
-        edgeEls[childId].classList.toggle(
-            'on',
-            winnerChild[pid] === childId
-        );
+        const isOn = winnerChild[pid] === childId;
+        edgeEls[childId].classList.toggle('on', isOn);
+        edgeEls[childId].classList.toggle('fixed', isOn && locked.has(pid));
     }
 
     // inner nodes
@@ -503,9 +502,10 @@ function render() {
         const el = nodeEls[`0-${i}`];
         el.classList.toggle('lost', isLoser(0, i));
         const pid = `1-${Math.floor(i / 2)}`;
-        const wonLocked =
-            locked.has(pid) && winnerChild[pid] === `0-${i}`;
+        const isWinner = winnerChild[pid] === `0-${i}`;
+        const wonLocked = locked.has(pid) && isWinner;
         el.classList.toggle('fixed', wonLocked);
+        el.classList.toggle('won', isWinner && !wonLocked);
         setLockMark(el, wonLocked);
     }
 

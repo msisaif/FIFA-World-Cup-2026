@@ -98,6 +98,10 @@ svg.lines {
     stroke-width: 3.2;
     filter: drop-shadow(0 0 4px rgba(244, 183, 64, 0.55));
 }
+.edge.on.fixed {
+    stroke: #22c55e;
+    filter: drop-shadow(0 0 4px rgba(34, 197, 94, 0.6));
+}
 
 .node {
     position: absolute;
@@ -111,12 +115,19 @@ svg.lines {
     height: 6.8cqmin;
     cursor: pointer;
     overflow: hidden;
-    border: 1.6px solid rgba(255, 255, 255, 0.16);
+    border: 1.6px solid rgba(255, 255, 255, 0.6);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     transition:
         transform 0.18s ease,
         border-color 0.25s ease,
         box-shadow 0.25s ease;
+}
+.leaf.won {
+    border-color: var(--gold);
+    box-shadow:
+        0 0 0 2px var(--gold),
+        0 0 10px rgba(244, 183, 64, 0.45),
+        0 3px 9px rgba(0, 0, 0, 0.5);
 }
 /* always-visible flag-colour base + code; real flag image sits on top if it loads */
 .flagimg {
@@ -134,12 +145,12 @@ svg.lines {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1;
+    z-index: 3;
 }
 .code i {
     font-style: normal;
     font-weight: 500;
-    font-size: 2.4cqmin;
+    font-size: 2cqmin;
     letter-spacing: 0.02em;
     color: #fff;
     background: rgba(12, 12, 12, 0.55);
@@ -166,34 +177,14 @@ svg.lines {
 }
 /* a fixed / completed result */
 .node.fixed {
+    border-color: #22c55e;
     box-shadow:
-        0 0 0 2px var(--gold),
-        0 0 10px rgba(244, 183, 64, 0.45),
+        0 0 0 2px #22c55e,
+        0 0 10px rgba(34, 197, 94, 0.45),
         0 3px 9px rgba(0, 0, 0, 0.5);
 }
 .lockmark {
-    position: absolute;
-    top: -4%;
-    right: -4%;
-    width: 36%;
-    height: 36%;
-    border-radius: 50%;
-    background: var(--gold);
-    border: 1.5px solid #16120b;
-    z-index: 4;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
-}
-.lockmark::before {
-    /* checkmark */
-    content: '';
-    position: absolute;
-    left: 36%;
-    top: 18%;
-    width: 22%;
-    height: 46%;
-    border: solid #16120b;
-    border-width: 0 1.6px 1.6px 0;
-    transform: rotate(43deg);
+    display: none;
 }
 
 /* inner junction nodes */
