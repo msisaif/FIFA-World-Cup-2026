@@ -258,6 +258,7 @@ const FIXED = {
         'CAN', // CAN 1 - 0 RSA
         'BRA', // BRA 2 - 1 JPN
         'PAR', // PAR 1(4) - 1(3) GER
+        'MAR', // MAR 1(3) - 1(2) NED
     ], // Round of 32 winners (locked)
     r16: [], // Round of 16 winners (locked)
     qf: [], // Quarter-final winners (locked)
