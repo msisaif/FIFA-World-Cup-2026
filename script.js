@@ -260,6 +260,7 @@ const FIXED = {
         'PAR', // PAR 1(4) - 1(3) GER
         'MAR', // MAR 1(3) - 1(2) NED
         'NOR', // NOR 2 - 2 CIV
+        'FRA', // FRA 3 - 0 SWE
     ], // Round of 32 winners (locked)
     r16: [], // Round of 16 winners (locked)
     qf: [], // Quarter-final winners (locked)
