@@ -1,198 +1,5 @@
-/* ---------------- data ---------------- */
-const TEAMS = [
-    {
-        n: 'Brazil',
-        c: 'br',
-        k: 'BRA',
-        col: ['#009b3a', '#ffdf00', '#009b3a'],
-    },
-    {
-        n: 'Japan',
-        c: 'jp',
-        k: 'JPN',
-        col: ['#ffffff', '#bc002d', '#ffffff'],
-    },
-    {
-        n: 'Côte d’Ivoire',
-        c: 'ci',
-        k: 'CIV',
-        col: ['#f77f00', '#ffffff', '#009e60'],
-    },
-    {
-        n: 'Norway',
-        c: 'no',
-        k: 'NOR',
-        col: ['#ba0c2f', '#ffffff', '#00205b'],
-    },
-    {
-        n: 'Mexico',
-        c: 'mx',
-        k: 'MEX',
-        col: ['#006847', '#ffffff', '#ce1126'],
-    },
-    {
-        n: 'Ecuador',
-        c: 'ec',
-        k: 'ECU',
-        col: ['#ffd100', '#0033a0', '#ef3340'],
-    },
-    {
-        n: 'England',
-        c: 'gb-eng',
-        k: 'ENG',
-        col: ['#ffffff', '#ce1124', '#ffffff'],
-    },
-    {
-        n: 'DR Congo',
-        c: 'cd',
-        k: 'COD',
-        col: ['#007fff', '#f7d618', '#ce1021'],
-    },
-    {
-        n: 'Argentina',
-        c: 'ar',
-        k: 'ARG',
-        col: ['#74acdf', '#ffffff', '#74acdf'],
-    },
-    {
-        n: 'Cape Verde',
-        c: 'cv',
-        k: 'CPV',
-        col: ['#003893', '#ffffff', '#cf2027'],
-    },
-    {
-        n: 'Australia',
-        c: 'au',
-        k: 'AUS',
-        col: ['#00008b', '#ffffff', '#e4002b'],
-    },
-    {
-        n: 'Egypt',
-        c: 'eg',
-        k: 'EGY',
-        col: ['#ce1126', '#ffffff', '#000000'],
-    },
-    {
-        n: 'Switzerland',
-        c: 'ch',
-        k: 'SUI',
-        col: ['#d52b1e', '#ffffff', '#d52b1e'],
-    },
-    {
-        n: 'Algeria',
-        c: 'dz',
-        k: 'ALG',
-        col: ['#006233', '#ffffff', '#d21034'],
-    },
-    {
-        n: 'Colombia',
-        c: 'co',
-        k: 'COL',
-        col: ['#fcd116', '#003893', '#ce1126'],
-    },
-    {
-        n: 'Ghana',
-        c: 'gh',
-        k: 'GHA',
-        col: ['#ce1126', '#fcd116', '#006b3f'],
-    },
-    {
-        n: 'Senegal',
-        c: 'sn',
-        k: 'SEN',
-        col: ['#00853f', '#fdef42', '#e31b23'],
-    },
-    {
-        n: 'Belgium',
-        c: 'be',
-        k: 'BEL',
-        col: ['#000000', '#fae042', '#ed2939'],
-    },
-    {
-        n: 'Bosnia',
-        c: 'ba',
-        k: 'BIH',
-        col: ['#002395', '#fecb00', '#002395'],
-    },
-    {
-        n: 'USA',
-        c: 'us',
-        k: 'USA',
-        col: ['#3c3b6e', '#ffffff', '#b22234'],
-    },
-    {
-        n: 'Austria',
-        c: 'at',
-        k: 'AUT',
-        col: ['#ed2939', '#ffffff', '#ed2939'],
-    },
-    {
-        n: 'Spain',
-        c: 'es',
-        k: 'ESP',
-        col: ['#aa151b', '#f1bf00', '#aa151b'],
-    },
-    {
-        n: 'Croatia',
-        c: 'hr',
-        k: 'CRO',
-        col: ['#ff0000', '#ffffff', '#171796'],
-    },
-    {
-        n: 'Portugal',
-        c: 'pt',
-        k: 'POR',
-        col: ['#006600', '#ff0000', '#006600'],
-    },
-    {
-        n: 'Morocco',
-        c: 'ma',
-        k: 'MAR',
-        col: ['#c1272d', '#006233', '#c1272d'],
-    },
-    {
-        n: 'Netherlands',
-        c: 'nl',
-        k: 'NED',
-        col: ['#ae1c28', '#ffffff', '#21468b'],
-    },
-    {
-        n: 'Canada',
-        c: 'ca',
-        k: 'CAN',
-        col: ['#ff0000', '#ffffff', '#ff0000'],
-    },
-    {
-        n: 'South Africa',
-        c: 'za',
-        k: 'RSA',
-        col: ['#007749', '#ffb81c', '#de3831'],
-    },
-    {
-        n: 'Sweden',
-        c: 'se',
-        k: 'SWE',
-        col: ['#006aa7', '#fecc00', '#006aa7'],
-    },
-    {
-        n: 'France',
-        c: 'fr',
-        k: 'FRA',
-        col: ['#0055a4', '#ffffff', '#ef4135'],
-    },
-    {
-        n: 'Paraguay',
-        c: 'py',
-        k: 'PAR',
-        col: ['#d52b1e', '#ffffff', '#0038a8'],
-    },
-    {
-        n: 'Germany',
-        c: 'de',
-        k: 'GER',
-        col: ['#000000', '#dd0000', '#ffce00'],
-    },
-];
+/* ---------------- data (loaded from JSON) ---------------- */
+let TEAMS;
 const flag = (c) => `https://flagcdn.com/w80/${c}.png`;
 
 // flag-coloured gradient used as the always-visible base (works offline)
@@ -237,37 +44,7 @@ const winners = {}; // "r-i" (internal) -> team index
 const winnerChild = {}; // "r-i" (internal) -> child id that won it
 const locked = new Set(); // ids of nodes whose result is fixed (cannot change)
 
-/* ================= FIXED RESULTS =================
-   Hard-code real results here. Put a team's 3-letter CODE under the
-   round it has WON. That match becomes locked — clicking can't change it,
-   and "আবার শুরু" keeps it. A later-round win automatically locks the
-   team's earlier-round wins too.
-
-   Valid codes:
-   BRA JPN CIV NOR MEX ECU ENG COD ARG CPV AUS EGY SUI ALG COL GHA
-   SEN BEL BIH USA AUT ESP CRO POR MAR NED CAN RSA SWE FRA PAR GER
-
-   Example:
-     r32:  ['BRA','ARG','GER'],   // these 3 won their Round-of-32 match
-     r16:  ['BRA','ARG'],         // BRA & ARG also won Round-of-16
-     qf:   ['BRA'],
-     final:'BRA'                  // BRA is the locked champion
-================================================== */
-const FIXED = {
-    r32: [
-        'CAN', // CAN 1 - 0 RSA
-        'BRA', // BRA 2 - 1 JPN
-        'PAR', // PAR 1(4) - 1(3) GER
-        'MAR', // MAR 1(3) - 1(2) NED
-        'NOR', // NOR 2 - 2 CIV
-        'FRA', // FRA 3 - 0 SWE
-        'MEX', // MEX 2 - 0 ECU
-    ], // Round of 32 winners (locked)
-    r16: [], // Round of 16 winners (locked)
-    qf: [], // Quarter-final winners (locked)
-    sf: [], // Semi-final winners (locked)
-    final: null, // champion, e.g. 'ARG'
-};
+let FIXED;
 
 const codeIndex = (code) => TEAMS.findIndex((t) => t.k === code);
 
@@ -278,13 +55,8 @@ function lockPath(ti, R) {
         const child = Math.floor(ti / 2 ** (r - 1)); // node index at ring r-1
         const pid = `${r}-${parent}`;
         if (winners[pid] !== undefined && winners[pid] !== ti)
-            console.warn(
-                'FIXED conflict at',
-                pid,
-                '—',
-                TEAMS[winners[pid]].k,
-                'vs',
-                TEAMS[ti].k
+            throw new Error(
+                `data/results.json conflict at ${pid} — ${TEAMS[winners[pid]].k} vs ${TEAMS[ti].k}`
             );
         winners[pid] = ti;
         winnerChild[pid] = `${r - 1}-${child}`;
@@ -344,17 +116,19 @@ function place(el, p) {
     el.style.top = p.y / 10 + '%';
 }
 
-// leaves (teams)
-for (let i = 0; i < 32; i++) {
-    const p = posOf(0, i),
-        t = TEAMS[i];
-    const el = document.createElement('div');
-    el.className = 'node leaf';
-    paint(el, t, true);
-    place(el, p);
-    el.addEventListener('click', () => advance(0, i));
-    stage.appendChild(el);
-    nodeEls[`0-${i}`] = el;
+// leaves built in init() after TEAMS data loads
+
+// make a node clickable AND operable via keyboard (Enter/Space)
+function bindActivate(el, handler) {
+    el.tabIndex = 0;
+    el.setAttribute('role', 'button');
+    el.addEventListener('click', handler);
+    el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handler();
+        }
+    });
 }
 
 // inner nodes
@@ -363,7 +137,7 @@ for (let r = 1; r < 5; r++) {
         const el = document.createElement('div');
         el.className = 'node inner';
         place(el, posOf(r, i));
-        el.addEventListener('click', () => advance(r, i));
+        bindActivate(el, () => advance(r, i));
         stage.appendChild(el);
         nodeEls[`${r}-${i}`] = el;
     }
@@ -418,19 +192,6 @@ function isLoser(r, i) {
     );
 }
 
-// show / hide the little lock badge on a node element
-function setLockMark(el, on) {
-    const m = el.querySelector('.lockmark');
-    if (on && !m) {
-        const s = document.createElement('span');
-        s.className = 'lockmark';
-        s.title = 'ফল নিশ্চিত (সম্পন্ন)';
-        el.appendChild(s);
-    } else if (!on && m) {
-        m.remove();
-    }
-}
-
 let warnTimer = null;
 function feedback(r, i, msg) {
     const el = nodeEls[`${r}-${i}`];
@@ -456,11 +217,11 @@ function advance(r, i) {
         pi = Math.floor(i / 2),
         pid = `${pr}-${pi}`;
     if (locked.has(pid)) {
-        feedback(r, i, '🔒 এই ফল লক করা আছে');
+        feedback(r, i, '🔒 This result is locked');
         return;
     } // fixed result
     if (r >= 1 && !roundComplete(r)) {
-        feedback(r, i, '⚠ আগে এই রাউন্ডের সব ম্যাচ শেষ করো');
+        feedback(r, i, '⚠ Complete all matches in this round first');
         return;
     }
 
@@ -498,7 +259,6 @@ function render() {
                 el.className =
                     'node inner filled' + lock + lost + fix;
                 paint(el, TEAMS[ti], false);
-                setLockMark(el, !!fix);
             }
         }
     }
@@ -512,7 +272,6 @@ function render() {
         const wonLocked = locked.has(pid) && isWinner;
         el.classList.toggle('fixed', wonLocked);
         el.classList.toggle('won', isWinner && !wonLocked);
-        setLockMark(el, wonLocked);
     }
 
     // champion
@@ -540,7 +299,7 @@ function updateStatus() {
     const hint = document.getElementById('hint');
     hint.classList.remove('warn');
     if (winners['5-0'] !== undefined) {
-        hint.textContent = '🏆 চ্যাম্পিয়ন নির্ধারিত!';
+        hint.textContent = '🏆 Champion decided!';
         return;
     }
     const names = [
@@ -555,7 +314,7 @@ function updateStatus() {
             let done = 0;
             for (let i = 0; i < RINGS[k]; i++)
                 if (winners[`${k}-${i}`] !== undefined) done++;
-            hint.textContent = `${names[k - 1]} · ${done}/${RINGS[k]} ম্যাচ`;
+            hint.textContent = `${names[k - 1]} · ${done}/${RINGS[k]} matches`;
             return;
         }
     }
@@ -598,7 +357,10 @@ function preloadFlags() {
         let pending = TEAMS.length,
             failed = false;
         const done = () => {
-            if (--pending === 0) failed ? reject() : resolve(map);
+            if (--pending === 0) {
+                clearTimeout(t0);
+                failed ? reject() : resolve(map);
+            }
         };
         const t0 = setTimeout(() => {
             failed = true;
@@ -616,9 +378,6 @@ function preloadFlags() {
                 done();
             };
             im.src = flag(t.c);
-        });
-        Promise.resolve().then(() => {
-            if (pending === 0) clearTimeout(t0);
         });
     });
 }
@@ -850,9 +609,9 @@ copyBtn.addEventListener('click', async () => {
         await navigator.clipboard.write([
             new ClipboardItem({ 'image/png': blob }),
         ]);
-        toast('✓ ছবি ক্লিপবোর্ডে কপি হয়েছে');
+        toast('✓ Image copied to clipboard');
     } catch (_) {
-        toast('কপি করা গেল না — ডাউনলোড করে দেখো');
+        toast('Copy failed — try downloading instead');
     }
     copyBtn.disabled = false;
 });
@@ -868,12 +627,42 @@ dlBtn.addEventListener('click', async () => {
         a.click();
         a.remove();
         setTimeout(() => URL.revokeObjectURL(a.href), 1500);
-        toast('✓ ছবি ডাউনলোড হয়েছে');
+        toast('✓ Image downloaded');
     } catch (_) {
-        toast('ডাউনলোড ব্যর্থ হয়েছে');
+        toast('Download failed');
     }
     dlBtn.disabled = false;
 });
 
-applyLocks(); // load any hard-coded fixed results
-render();
+function init() {
+    for (let i = 0; i < 32; i++) {
+        const p = posOf(0, i),
+            t = TEAMS[i];
+        const el = document.createElement('div');
+        el.className = 'node leaf';
+        paint(el, t, true);
+        place(el, p);
+        bindActivate(el, () => advance(0, i));
+        stage.appendChild(el);
+        nodeEls[`0-${i}`] = el;
+    }
+    applyLocks();
+    render();
+}
+
+Promise.all([
+    fetch('data/teams.json').then((r) => r.json()),
+    fetch('data/results.json').then((r) => r.json()),
+])
+    .then(([teams, fixed]) => {
+        TEAMS = teams;
+        FIXED = fixed;
+        init();
+    })
+    .catch((err) => {
+        console.error('Failed to load bracket', err);
+        document.getElementById('hint').textContent =
+            location.protocol === 'file:'
+                ? 'Failed to load bracket data — serve this site over http(s):// (not file://) and try again.'
+                : 'Failed to load bracket — see console for details.';
+    });
